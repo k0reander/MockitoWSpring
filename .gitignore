@@ -1,8 +1,8 @@
-# Eclipse
+# eclipse project file
+.git
+.settings
 .classpath
 .project
-.settings/
- 
-# Maven
-log/
-target
+.springBeans
+/bin
+/target
