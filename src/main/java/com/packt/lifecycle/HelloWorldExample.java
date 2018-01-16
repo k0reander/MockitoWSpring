@@ -9,7 +9,7 @@ public class HelloWorldExample {
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		HelloWorld world = (HelloWorld) context.getBean("helloWorld");
-		System.out.println(world.getMessage());
+		System.out.println(world.getMessage());		
 	}
 
 }

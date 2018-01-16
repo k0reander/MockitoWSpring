@@ -1,14 +1,15 @@
 package com.packt.lifecycle;
 
 public class HelloWorld {
-	private String message;
+	
+	private Planet planet;
 
 	public String getMessage() {
-		return message;
+		return "Hello from planet " + planet.getName();
 	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	
+	public void setPlanet(Planet planet) {
+		this.planet = planet;
 	}
 
 }
