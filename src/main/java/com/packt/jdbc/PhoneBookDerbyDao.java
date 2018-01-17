@@ -26,7 +26,7 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 	}
 
 	@Override
-	public boolean create(PhoneEntry entry) throws SQLException {
+	public boolean create(PhoneEntry entry){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 	
@@ -40,21 +40,34 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			conn.commit();
 			return true;
 		} catch (SQLException e) {
-			conn.rollback();
-			throw e;
+			if (conn != null)
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					throw new RuntimeException("conn.rollback() threw SQLEXception and " + e.getMessage(), e);
+				}
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}
 	}
 
 	@Override
-	public boolean update(PhoneEntry entry) throws SQLException {
+	public boolean update(PhoneEntry entry){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -68,21 +81,34 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			conn.commit();
 			return true;
 		} catch (SQLException e) {
-			conn.rollback();
-			throw e;
+			if (conn != null)
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					throw new RuntimeException("conn.rollback() threw SQLEXception and " + e.getMessage(), e);
+				}
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}
 	}
 
 	@Override
-	public boolean delete(String number) throws SQLException {
+	public boolean delete(String number){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
@@ -93,21 +119,34 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			conn.commit();
 			return true;
 		} catch (SQLException e) {
-			conn.rollback();
-			throw e;
+			if (conn != null)
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					throw new RuntimeException("conn.rollback() threw SQLEXception and " + e.getMessage(), e);
+				}
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}
 	}
 
 	@Override
-	public List<PhoneEntry> searchByNumber(String number) throws SQLException {
+	public List<PhoneEntry> searchByNumber(String number){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -127,23 +166,35 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			return entries;
 		}
 		catch (SQLException e) {
-			throw e;
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(rs != null)
-				rs.close();
-			rs = null;
+				try {
+					rs.close();
+					rs = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}		
 	}
 
 	@Override
-	public List<PhoneEntry> searchByFirstName(String firstName) throws SQLException {
+	public List<PhoneEntry> searchByFirstName(String firstName){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -169,23 +220,35 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			return entries;
 		}
 		catch (SQLException e) {
-			throw e;
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(rs != null)
-				rs.close();
-			rs = null;
+				try {
+					rs.close();
+					rs = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}
 	}
 
 	@Override
-	public List<PhoneEntry> searchByLastName(String lastName) throws SQLException {
+	public List<PhoneEntry> searchByLastName(String lastName){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -211,22 +274,34 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			return entries;
 		}
 		catch (SQLException e) {
-			throw e;
+			throw new RuntimeException(e);
 		}
 		finally {
 			if(rs != null)
-				rs.close();
-			rs = null;
+				try {
+					rs.close();
+					rs = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(stmt != null)
-				stmt.close();
-			stmt = null;
+				try {
+					stmt.close();
+					stmt = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			if(conn != null)
-				conn.close();
-			conn = null;
+				try {
+					conn.close();
+					conn = null;
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 		}
 	}
 	
-	protected static PhoneEntry adaptResultSetToPhoneEntry(ResultSet rs) throws SQLException {
+	protected static PhoneEntry adaptResultSetToPhoneEntry(ResultSet rs) throws SQLException{
 		PhoneEntry entry = new PhoneEntry();
 		entry.setPhoneNumber( rs.getString("number") );
 		entry.setFirstName( rs.getString("first_name") );

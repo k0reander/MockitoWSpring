@@ -55,7 +55,7 @@ public class PhoneNumbers {
 		try {
 			phoneEntryDao.create(entry);
 			System.out.println("Succesfully created entry for " + entry);
-		} catch (SQLException e) {
+		} catch (RuntimeException e) {
 			System.out.println("Failed to create entry for " + entry);
 			e.printStackTrace();
 		}
