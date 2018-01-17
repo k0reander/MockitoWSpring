@@ -13,7 +13,7 @@ public class PhoneEntryTest {
 		entry.setFirstName("Frank");
 		entry.setLastName("Dupont");
 		entry.setPhoneNumber("0478975011");
-		assertEquals("toStirng() method incorrect", expected, entry.toString());
+		assertEquals("toString() method incorrect", expected, entry.toString());
 	}
 
 }
