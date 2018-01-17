@@ -1,15 +1,12 @@
 package com.packt.jdbc;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class PhoneNumbers {
 	private static final String CREATE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
-	private static final String INSERT_SQL = "INSERT INTO phonenumbers VALUES(?, ?, ?)";
-	private static final String SELECT_SQL = "SELECT * FROM phonenumbers";
 	
 	public static void main(String[] args) throws SQLException {
 		setUpDatabase();
@@ -41,60 +38,27 @@ public class PhoneNumbers {
 	}
 		
 	private static void trySelect() throws SQLException {
-		Connection connection = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			connection = DerbyInMemoryDB.getInstance().getConnection(true);
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(SELECT_SQL);
-			while(rs.next()) {
-				String phoneNumber = rs.getString("number");
-				String firstName = rs.getString("first_name");
-				String lastName = rs.getString("last_name");
-				System.out.println(firstName + " " + lastName + ":" + phoneNumber);
-			}
-		}
-		 catch (SQLException e) {
-				throw e;
-			}
-		finally {
-			if(rs != null)
-				rs.close();
-			rs = null;
-			if(stmt != null)
-				stmt.close();
-			stmt = null;
-			if(connection != null)
-				connection.close();
-			connection = null;
+		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance());
+		List<PhoneEntry> entries = phoneEntryDao.searchByNumber("0478975011");
+		for (PhoneEntry entry : entries) {
+			System.out.println(entry);
 		}
 	}
 	
-	private static void tryInsert(String number, String firstName, String lastName) throws SQLException {
-		Connection connection = null;
-		PreparedStatement stmt = null;
-		try {
-			connection = DerbyInMemoryDB.getInstance().getConnection(false);
-			stmt = connection.prepareStatement(INSERT_SQL);
-			stmt.setString(1, number);
-			stmt.setString(2, firstName);
-			stmt.setString(3, lastName);
-			int rows = stmt.executeUpdate();
-			System.out.println("Created " + rows + " row(s)");
-			connection.commit();
-		} catch (SQLException e) {
-			throw e;
-		}
-		finally {
-			if(stmt != null)
-				stmt.close();
-			stmt = null;			
-			if(connection != null)
-				connection.close();
-			connection = null;
-		}
+	private static void tryInsert(String number, String firstName, String lastName) {
+		PhoneEntry entry = new PhoneEntry();
+		entry.setPhoneNumber(number);
+		entry.setFirstName(firstName);
+		entry.setLastName(lastName);
 		
+		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance());
+		try {
+			phoneEntryDao.create(entry);
+			System.out.println("Succesfully created entry for " + entry);
+		} catch (SQLException e) {
+			System.out.println("Failed to create entry for " + entry);
+			e.printStackTrace();
+		}
 	}
 	
 }
