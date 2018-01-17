@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public class PhoneNumbers {
-	private static final String CREATE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
+	private static final String CREATE_PHONENUMBERS_TABLE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
 	
 	public static void main(String[] args) throws SQLException {
 		setUpDatabase();
@@ -21,7 +21,7 @@ public class PhoneNumbers {
 		try {
 			connection = DerbyInMemoryDB.getInstance().getConnection(true);
 			stmt = connection.createStatement();
-			stmt.execute(CREATE_SQL);
+			stmt.execute(CREATE_PHONENUMBERS_TABLE_SQL);
 			System.out.println("TABLE phonenumbers created");
 		}
 		catch(SQLException e) {
