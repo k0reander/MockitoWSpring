@@ -13,11 +13,11 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 	private static final String UPDATE_PHONE_ENTRY_SQL = "UPDATE phonenumbers SET number = ?, first_name = ?, last_name = ? WHERE number = ?";
 	private static final String DELETE_PHONE_ENTRY_SQL = "DELETE FROM phonenumbers WHERE number = ?";
 	
-	private static final String SEARCH_BY_NUMBER_SQL = "SELECT FROM phonenumbers WHERE number = ?";
-	private static final String SEARCH_FIRST_NAME_IS_NULL_SQL = "SELECT FROM phonenumbers WHERE first_name_IS_NULL";
-	private static final String SEARCH_LAST_NAME_IS_NULL_SQL = "SELECT FROM phonenumbers last_name IS NULL";
-	private static final String SEARCH_LIKE_FIRST_NAME_SQL = "SELECT FROM phonenumbers WHERE LOWER(first_name) = ?";
-	private static final String SEARCH_LIKE_LAST_NAME_SQL = "SELECT FROM phonenumbers WHERE LOWER(last_name) = ?";
+	private static final String SEARCH_BY_NUMBER_SQL = "SELECT * FROM phonenumbers WHERE number = ?";
+	private static final String SEARCH_FIRST_NAME_IS_NULL_SQL = "SELECT * FROM phonenumbers WHERE first_name_IS_NULL";
+	private static final String SEARCH_LAST_NAME_IS_NULL_SQL = "SELECT * FROM phonenumbers last_name IS NULL";
+	private static final String SEARCH_LIKE_FIRST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(first_name) = ?";
+	private static final String SEARCH_LIKE_LAST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(last_name) = ?";
 	
 	private final DerbyInMemoryDB db;
 
@@ -29,15 +29,16 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 	public boolean create(PhoneEntry entry) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		boolean result = false;
+	
 		try {
 			conn = db.getConnection(false);
 			stmt = conn.prepareStatement(INSERT_PHONE_ENTRY_SQL);
 			stmt.setString(1, entry.getPhoneNumber());
 			stmt.setString(2, entry.getFirstName());
 			stmt.setString(3, entry.getLastName());
-			result = stmt.execute();
+			stmt.execute();
 			conn.commit();
+			return true;
 		} catch (SQLException e) {
 			conn.rollback();
 			throw e;
@@ -50,14 +51,12 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 				conn.close();
 			conn = null;
 		}
-		return result;
 	}
 
 	@Override
 	public boolean update(PhoneEntry entry) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		boolean result = false;
 		try {
 			conn = db.getConnection(false);
 			stmt = conn.prepareStatement(UPDATE_PHONE_ENTRY_SQL);
@@ -65,8 +64,9 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 			stmt.setString(2, entry.getFirstName());
 			stmt.setString(3, entry.getLastName());
 			stmt.setString(4, entry.getPhoneNumber());
-			result = stmt.execute();
+			stmt.execute();
 			conn.commit();
+			return true;
 		} catch (SQLException e) {
 			conn.rollback();
 			throw e;
@@ -79,20 +79,19 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 				conn.close();
 			conn = null;
 		}
-		return result;	
 	}
 
 	@Override
 	public boolean delete(String number) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		boolean result = false;
 		try {
 			conn = db.getConnection(false);
 			stmt = conn.prepareStatement(DELETE_PHONE_ENTRY_SQL);
 			stmt.setString(1, number);
-			result = stmt.execute();
+			stmt.execute();
 			conn.commit();
+			return true;
 		} catch (SQLException e) {
 			conn.rollback();
 			throw e;
@@ -105,7 +104,6 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 				conn.close();
 			conn = null;
 		}
-		return result;	
 	}
 
 	@Override
