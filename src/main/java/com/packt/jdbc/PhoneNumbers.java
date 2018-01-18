@@ -10,7 +10,7 @@ public class PhoneNumbers {
 	
 	public static void main(String[] args) throws SQLException {		
 		setUpDatabase();
-		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance().getDataSource());
+		PhoneBookDao phoneEntryDao = new PhoneBookDerbySpringDao(DerbyInMemoryDB.getInstance().getDataSource());
 		tryInsert(phoneEntryDao, "0478975011", "Frank", "Dupont");
 		trySelect(phoneEntryDao);
 		DerbyInMemoryDB.getInstance().shutdown();
@@ -38,14 +38,14 @@ public class PhoneNumbers {
 		}
 	}
 		
-	private static void trySelect(PhoneBookDerbyDao phoneEntryDao) throws SQLException {
+	private static void trySelect(PhoneBookDao phoneEntryDao) throws SQLException {
 		List<PhoneEntry> entries = phoneEntryDao.searchByNumber("0478975011");
 		for (PhoneEntry entry : entries) {
 			System.out.println(entry);
 		}
 	}
 	
-	private static void tryInsert(PhoneBookDerbyDao phoneEntryDao, String number, String firstName, String lastName) {
+	private static void tryInsert(PhoneBookDao phoneEntryDao, String number, String firstName, String lastName) {
 		PhoneEntry entry = new PhoneEntry();
 		entry.setPhoneNumber(number);
 		entry.setFirstName(firstName);
