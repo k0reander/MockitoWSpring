@@ -8,10 +8,11 @@ import java.util.List;
 public class PhoneNumbers {
 	private static final String CREATE_PHONENUMBERS_TABLE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
 	
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException {		
 		setUpDatabase();
-		tryInsert("0478975011", "Frank", "Dupont");
-		trySelect();
+		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance().getDataSource());
+		tryInsert(phoneEntryDao, "0478975011", "Frank", "Dupont");
+		trySelect(phoneEntryDao);
 		DerbyInMemoryDB.getInstance().shutdown();
 	}
 	
@@ -37,21 +38,19 @@ public class PhoneNumbers {
 		}
 	}
 		
-	private static void trySelect() throws SQLException {
-		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance());
+	private static void trySelect(PhoneBookDerbyDao phoneEntryDao) throws SQLException {
 		List<PhoneEntry> entries = phoneEntryDao.searchByNumber("0478975011");
 		for (PhoneEntry entry : entries) {
 			System.out.println(entry);
 		}
 	}
 	
-	private static void tryInsert(String number, String firstName, String lastName) {
+	private static void tryInsert(PhoneBookDerbyDao phoneEntryDao, String number, String firstName, String lastName) {
 		PhoneEntry entry = new PhoneEntry();
 		entry.setPhoneNumber(number);
 		entry.setFirstName(firstName);
 		entry.setLastName(lastName);
 		
-		PhoneBookDerbyDao phoneEntryDao = new PhoneBookDerbyDao(DerbyInMemoryDB.getInstance());
 		try {
 			phoneEntryDao.create(entry);
 			System.out.println("Succesfully created entry for " + entry);

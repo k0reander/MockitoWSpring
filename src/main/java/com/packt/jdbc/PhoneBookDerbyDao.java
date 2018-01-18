@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 public class PhoneBookDerbyDao implements PhoneBookDao{
 	
 	private static final String INSERT_PHONE_ENTRY_SQL = "INSERT INTO phonenumbers VALUES(?, ?, ?)";
@@ -19,10 +21,10 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 	private static final String SEARCH_LIKE_FIRST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(first_name) = ?";
 	private static final String SEARCH_LIKE_LAST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(last_name) = ?";
 	
-	private final DerbyInMemoryDB db;
+	private final DataSource ds;
 
-	public PhoneBookDerbyDao(DerbyInMemoryDB db) {
-		this.db = db;
+	public PhoneBookDerbyDao(DataSource ds) {
+		this.ds = ds;
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 		PreparedStatement stmt = null;
 	
 		try {
-			conn = db.getConnection(false);
+			conn = getConnection(false);
 			stmt = conn.prepareStatement(INSERT_PHONE_ENTRY_SQL);
 			stmt.setString(1, entry.getPhoneNumber());
 			stmt.setString(2, entry.getFirstName());
@@ -71,7 +73,7 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = db.getConnection(false);
+			conn = getConnection(false);
 			stmt = conn.prepareStatement(UPDATE_PHONE_ENTRY_SQL);
 			stmt.setString(1, entry.getPhoneNumber());
 			stmt.setString(2, entry.getFirstName());
@@ -112,7 +114,7 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
-			conn = db.getConnection(false);
+			conn = getConnection(false);
 			stmt = conn.prepareStatement(DELETE_PHONE_ENTRY_SQL);
 			stmt.setString(1, number);
 			stmt.execute();
@@ -299,6 +301,12 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 					throw new RuntimeException(e);
 				}
 		}
+	}
+	
+	protected Connection getConnection(boolean autoCommit) throws SQLException {
+		Connection conn = this.ds.getConnection();
+		conn.setAutoCommit(autoCommit);
+		return conn;
 	}
 	
 	protected static PhoneEntry adaptResultSetToPhoneEntry(ResultSet rs) throws SQLException{

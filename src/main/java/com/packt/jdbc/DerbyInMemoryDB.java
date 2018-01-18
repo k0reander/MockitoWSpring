@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.apache.derby.jdbc.EmbeddedDataSource;
+
 public class DerbyInMemoryDB {
 	
 	private static final DerbyInMemoryDB instance = new DerbyInMemoryDB();
@@ -17,10 +21,15 @@ public class DerbyInMemoryDB {
 	private DerbyInMemoryDB() {}
 	
 	public Connection getConnection(boolean autoCommit) throws SQLException {
-		Connection connection = DriverManager.getConnection("jdbc:derby:memory:Mockito");
+		Connection connection = getDataSource().getConnection();
 		connection.setAutoCommit(autoCommit);
 		return connection;
-		
+	}
+	
+	public DataSource getDataSource() {
+		EmbeddedDataSource ds = new EmbeddedDataSource(); 
+		ds.setDatabaseName("memory:Mockito");
+		return ds;
 	}
 	
 	public void shutdown() throws SQLException {
