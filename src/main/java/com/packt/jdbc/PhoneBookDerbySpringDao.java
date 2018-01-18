@@ -3,6 +3,8 @@ package com.packt.jdbc;
 import java.sql.ResultSet;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -31,8 +33,8 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 																										return entry;
 																									};
 	
-	public PhoneBookDerbySpringDao(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate; 
+	public PhoneBookDerbySpringDao(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource); 
 	}
 
 	@Override
@@ -62,19 +64,22 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 	@Override
 	public List<PhoneEntry> searchByNumber(String number){
 		String sql = ( number == null ? SEARCH_BY_NUMBER_IS_NULL_SQL : SEARCH_BY_NUMBER_SQL );
-		return this.jdbcTemplate.query(sql, phoneEntryMapper);
+		Object[] parameters = number == null ? null : new String[] {number}; 		
+		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 
 	@Override
 	public List<PhoneEntry> searchByFirstName(String firstName){
 		String sql = ( firstName == null ? SEARCH_FIRST_NAME_IS_NULL_SQL : SEARCH_LIKE_FIRST_NAME_SQL );
-		return this.jdbcTemplate.query(sql, phoneEntryMapper);
+		Object[] parameters = firstName == null ? null : new String[] {firstName};
+		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 
 	@Override
 	public List<PhoneEntry> searchByLastName(String lastName){
 		String sql = ( lastName == null ? SEARCH_LAST_NAME_IS_NULL_SQL : SEARCH_LIKE_LAST_NAME_SQL );
-		return this.jdbcTemplate.query(sql, phoneEntryMapper);
+		Object[] parameters = lastName == null ? null : new String[] {lastName};
+		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 
 }
