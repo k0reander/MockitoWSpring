@@ -20,8 +20,8 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 	private static final String SEARCH_BY_NUMBER_IS_NULL_SQL = "SELECT * FROM phonenumbers WHERE number IS NULL";
 	private static final String SEARCH_FIRST_NAME_IS_NULL_SQL = "SELECT * FROM phonenumbers WHERE first_name_IS_NULL";
 	private static final String SEARCH_LAST_NAME_IS_NULL_SQL = "SELECT * FROM phonenumbers last_name IS NULL";
-	private static final String SEARCH_LIKE_FIRST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(first_name) = ?";
-	private static final String SEARCH_LIKE_LAST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(last_name) = ?";
+	private static final String SEARCH_LIKE_FIRST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(first_name) LIKE ?";
+	private static final String SEARCH_LIKE_LAST_NAME_SQL = "SELECT * FROM phonenumbers WHERE LOWER(last_name) LIKE ?";
 	
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -64,21 +64,21 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 	@Override
 	public List<PhoneEntry> searchByNumber(String number){
 		String sql = ( number == null ? SEARCH_BY_NUMBER_IS_NULL_SQL : SEARCH_BY_NUMBER_SQL );
-		Object[] parameters = number == null ? null : new String[] {number}; 		
+		Object[] parameters = ( number == null ? null : new String[] {number} ); 		
 		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 
 	@Override
 	public List<PhoneEntry> searchByFirstName(String firstName){
 		String sql = ( firstName == null ? SEARCH_FIRST_NAME_IS_NULL_SQL : SEARCH_LIKE_FIRST_NAME_SQL );
-		Object[] parameters = firstName == null ? null : new String[] {firstName};
+		Object[] parameters = ( firstName == null ? null : new String[] {"%"+firstName+"%"} );
 		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 
 	@Override
 	public List<PhoneEntry> searchByLastName(String lastName){
 		String sql = ( lastName == null ? SEARCH_LAST_NAME_IS_NULL_SQL : SEARCH_LIKE_LAST_NAME_SQL );
-		Object[] parameters = lastName == null ? null : new String[] {lastName};
+		Object[] parameters = ( lastName == null ? null : new String[] {"%"+lastName+"%"} ) ;
 		return this.jdbcTemplate.query(sql, phoneEntryMapper, parameters);
 	}
 

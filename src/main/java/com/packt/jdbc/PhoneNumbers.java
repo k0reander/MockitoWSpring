@@ -13,9 +13,18 @@ public class PhoneNumbers {
 		PhoneBookDao phoneEntryDao = new PhoneBookDerbySpringDao(DerbyInMemoryDB.getInstance().getDataSource());
 		tryInsert(phoneEntryDao, "0478975011", "Frank", "Dupont");
 		trySelect(phoneEntryDao);
+		tryFind(phoneEntryDao);
 		DerbyInMemoryDB.getInstance().shutdown();
 	}
 	
+	private static void tryFind(PhoneBookDao phoneEntryDao) {
+		List<PhoneEntry> entries = phoneEntryDao.searchByFirstName("frank");
+		for (PhoneEntry phoneEntry : entries) {
+			System.out.println("Found:" + phoneEntry);
+		}
+		
+	}
+
 	private static void setUpDatabase() throws SQLException {
 		Connection connection = null;
 		Statement stmt = null;
