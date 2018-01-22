@@ -18,4 +18,16 @@
 	<bean id="helloWorld" class="com.packt.lifecycle.HelloWorld">
 	</bean>
 	
+<!--  TRANASCTIONS -->
+	
+	<bean id="fooService" class="com.packt.tx.FooServiceImpl" />
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
+		<property name="url" value="jdbc:derby:memory:derbyDB;create=true" />
+	</bean>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>	
 </beans>
