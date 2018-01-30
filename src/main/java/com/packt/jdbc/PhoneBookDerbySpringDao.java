@@ -25,14 +25,25 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 	
 	
 	private final JdbcTemplate jdbcTemplate;
-	private final ResultSetExtractor<PhoneEntry> phoneEntryExtractor = (ResultSet rs) -> {	PhoneEntry entry = new PhoneEntry();
-																										entry.setPhoneNumber(rs.getString("number"));
-																										entry.setFirstName(rs.getString("first_name"));
-																										entry.setLastName(rs.getString("last_name"));
-																										return entry;
-																									};
+	private final ResultSetExtractor<PhoneEntry> phoneEntryExtractor = (ResultSet rs) -> {
+        if (rs.next()) {
+            PhoneEntry entry = new PhoneEntry();
+            entry.setPhoneNumber(rs.getString("number"));
+            entry.setFirstName(rs.getString("first_name"));
+            entry.setLastName(rs.getString("last_name"));
+            return entry;
+        } else
+            return null;
+    };
+
 	
-	private final RowMapper<PhoneEntry> phoneEntryMapper = (ResultSet rs, int rowNum) -> this.phoneEntryExtractor.extractData(rs);
+	private final RowMapper<PhoneEntry> phoneEntryMapper = (ResultSet rs, int rowNum) -> {
+        PhoneEntry entry = new PhoneEntry();
+        entry.setPhoneNumber(rs.getString("number"));
+        entry.setFirstName(rs.getString("first_name"));
+        entry.setLastName(rs.getString("last_name"));
+        return entry;
+    };
 	
 	public PhoneBookDerbySpringDao(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource); 
@@ -64,7 +75,7 @@ public class PhoneBookDerbySpringDao implements PhoneBookDao {
 
 	@Override
 	public PhoneEntry searchByNumber(String number){
-		return this.jdbcTemplate.query(SEARCH_BY_NUMBER_SQL, phoneEntryExtractor);
+        return this.jdbcTemplate.query(SEARCH_BY_NUMBER_SQL, phoneEntryExtractor, number);
 	}
 
 	@Override
