@@ -148,24 +148,24 @@ public class PhoneBookDerbyDao implements PhoneBookDao{
 	}
 
 	@Override
-	public List<PhoneEntry> searchByNumber(String number){
+	public PhoneEntry searchByNumber(String number){
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try {
-			List<PhoneEntry> entries = new ArrayList<PhoneEntry>();
 			conn = DerbyInMemoryDB.getInstance().getConnection(true);
 			stmt = conn.prepareStatement(SEARCH_BY_NUMBER_SQL);
 			stmt.setString(1, number);
 			rs = stmt.executeQuery();
 						
-			while(rs.next()) {
+			if(rs.next()) {
 				PhoneEntry entry = adaptResultSetToPhoneEntry(rs);
-				entries.add(entry);
+				return entry;
 			}
-			
-			return entries;
+			else
+				return null;
+
 		}
 		catch (SQLException e) {
 			throw new RuntimeException(e);

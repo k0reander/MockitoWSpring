@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public class PhoneNumbers {
-	private static final String CREATE_PHONENUMBERS_TABLE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
+	private static final String CREATE_PHONENUMBERS_TABLE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) PRIMARY KEY , first_name VARCHAR(256), last_name VARCHAR(256))";
 	
 	public static void main(String[] args) throws SQLException {		
 		setUpDatabase();
@@ -46,10 +46,8 @@ public class PhoneNumbers {
 	}
 		
 	private static void trySelect(PhoneBookDao phoneEntryDao) throws SQLException {
-		List<PhoneEntry> entries = phoneEntryDao.searchByNumber("0478975011");
-		for (PhoneEntry entry : entries) {
-			System.out.println(entry);
-		}
+		PhoneEntry entry = phoneEntryDao.searchByNumber("0478975011");
+		System.out.println(entry);
 	}
 	
 	private static void tryInsert(PhoneBookDao phoneEntryDao, String number, String firstName, String lastName) {

@@ -10,7 +10,7 @@ public interface PhoneBookDao {
 	
 	boolean delete (String number);
 	
-	List<PhoneEntry> searchByNumber(String number);
+	PhoneEntry searchByNumber(String number);
 	
 	List<PhoneEntry> searchByFirstName(String firstName);
 	
