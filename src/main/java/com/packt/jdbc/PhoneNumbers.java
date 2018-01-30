@@ -40,10 +40,8 @@ public class PhoneNumbers {
 		finally{
 			if(stmt != null)
 				stmt.close();
-			stmt = null;
 			if(connection != null)
 				connection.close();
-			connection = null;
 		}
 	}
 		
