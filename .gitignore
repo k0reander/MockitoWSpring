@@ -6,4 +6,6 @@
 .springBeans
 /bin
 /target
+/.idea
+SpringOverview.iml
 derby.log
