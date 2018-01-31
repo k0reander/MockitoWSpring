@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public abstract class PhoneBookDaoTest {
+public abstract class AbstractPhoneBookDaoTest {
 
     private static final String CREATE_PHONENUMBERS_TABLE_SQL = "CREATE TABLE phonenumbers(number VARCHAR(256) NOT NULL , first_name VARCHAR(256), last_name VARCHAR(256))";
     private static final String DROP_PHONENUMBERS_TABLE_SQL = "DROP TABLE phonenumbers";
@@ -44,9 +44,6 @@ public abstract class PhoneBookDaoTest {
             connection = DerbyInMemoryDB.getInstance().getConnection(true);
             stmt = connection.createStatement();
             stmt.execute(statement);
-        }
-        catch(SQLException e) {
-            throw e;
         }
         finally{
             if(stmt != null)
