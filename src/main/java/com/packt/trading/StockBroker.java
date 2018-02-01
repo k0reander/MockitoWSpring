@@ -23,7 +23,7 @@ public class StockBroker {
         BigDecimal percentGained = priceGained.divide(avg);
         if( percentGained.compareTo(LIMIT) > 0 )
             portfolio.sell(stock, 10);
-        if ( percentGained.compareTo(LIMIT) < 0)
+        if ( percentGained.compareTo(BigDecimal.ZERO) < 0)
             portfolio.buy(stock);
     }
 }
