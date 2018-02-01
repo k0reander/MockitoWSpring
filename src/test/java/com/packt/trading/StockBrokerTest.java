@@ -63,9 +63,12 @@ public class StockBrokerTest {
         when( watcher.getQuote(anyString()) ).thenReturn(equalStock);
         broker.perform(portfolio, myStock);
 
-        //verifies that absolutely nothing else happens on portfolio after the initial call; fragile and depends on portfolio implementation
+        //verifies that absolutely nothing else happens on portfolio after the avg-call; fragile and depends on portfolio implementation
         verify(portfolio).getAvgPrice(myStock);
         verifyNoMoreInteractions(portfolio);
+
+        //verifies nothing ever happened on portfolio except initial avg-call; also fragile and implementation dependent
+        verify(portfolio, only()).getAvgPrice( any(Stock.class) );
 
         //verifies instead clearly that nothing is sold or bought; better solution
         verify(portfolio, never()).buy( any(Stock.class) );
