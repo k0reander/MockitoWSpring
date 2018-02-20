@@ -6,3 +6,7 @@
 .springBeans
 /bin
 /target
+/.idea
+SpringOverview.iml
+main.iml
+derby.log
