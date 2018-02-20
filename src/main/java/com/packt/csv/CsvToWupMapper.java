@@ -47,23 +47,6 @@ public class CsvToWupMapper {
     }
 
 
-    class WUPRecord{
-        String gupGipNummer;
-        String eigenNummer;
-        String investeringsType;
-        Integer prioriteit;
-
-        @Override
-        public String toString() {
-            return "WUPRecord{" +
-                    "gupGipNummer='" + gupGipNummer + '\'' +
-                    ", eigenNummer='" + eigenNummer + '\'' +
-                    ", investeringsType='" + investeringsType + '\'' +
-                    ", prioriteit=" + prioriteit +
-                    '}';
-        }
-    }
-
     class WUPRecordBuilder {
         Map<String, Integer> headerMap;
         public WUPRecordBuilder(Map<String, Integer> headerMap) {
