@@ -26,7 +26,8 @@ public class JacksonCsvMapper {
                 .addColumn("investeringsType")
                 .addColumn("prioriteit", CsvSchema.ColumnType.NUMBER)
                 .build()
-                .withSkipFirstDataRow(true);
+                .withSkipFirstDataRow(true)
+                .withColumnSeparator(';');
 
         CsvMapper mapper = new CsvMapper();
 

@@ -23,7 +23,9 @@ public class CsvToWupMapper {
 
     public static void main(String[] args) throws IOException {
         File file = new ClassPathResource("rename.csv").getFile();
-        CSVFormat csvFormat = CSVFormat.INFORMIX_UNLOAD_CSV.withHeader("GUP/GIP", "Eigen Nummer", "Investeringstype", "Prioriteit");
+        CSVFormat csvFormat = CSVFormat.INFORMIX_UNLOAD_CSV
+                .withHeader("GUP/GIP", "Eigen Nummer", "Investeringstype", "Prioriteit")
+                .withDelimiter(';');
 
         CsvToWupMapper mapper = new CsvToWupMapper(csvFormat);
         List<WUPRecord> wupRecords = mapper.map(file);
